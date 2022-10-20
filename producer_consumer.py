@@ -17,28 +17,34 @@ y que el consumidor no intente tomar un producto si el buffer está vacío.
 """
 
 queue = queue.Queue(maxsize=10)
+items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+         51, 52, 53, 54, 55]
+
 
 def producer():
-    while True:
+    while items:
         if not queue.full():
-            item = random.randint(1, 10)
-            queue.put(item)
-
-            logging.info(f'Nuevo elemento dentro de la cola {item}')
-
-            time_to_sleep = random.randint(1, 3)
-            time.sleep(time_to_sleep)
+          item = items.pop(0)
+          queue.put(item)
+          logging.debug('Producido:  {}'.format(item))
+          time.sleep(random.randint(1, 3))
+          if queue.full():
+            logging.debug('Buffer lleno')
+          if items == []:
+            logging.debug('No hay más productos')
 
 def consumer():
     while True:
         if not queue.empty():
-            item = queue.get()
-            queue.task_done()
+          item = queue.get()
+          queue.task_done()
+          logging.info(f'Consumido: {item}')
+          time_to_sleep = random.randint(1, 4)
+          time.sleep(time_to_sleep)
+          if queue.empty():
+            logging.info('Buffer vacío')
+            break
 
-            logging.info(f'Nuevo elemento obtenido {item}')
-
-            time_to_sleep = random.randint(1, 3)
-            time.sleep(time_to_sleep)
 
 if __name__ == '__main__':
     thread_producer = threading.Thread(target=producer)

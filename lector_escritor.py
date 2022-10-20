@@ -9,15 +9,15 @@ i = 0
 
 
 def leyendo():
-    print('\033[32mLeyendo')
+    print('\033Leyendo')
     time.sleep(random.randint(1, 10))
-    print('\033[32mDejando de leer')
+    print('\033Dejando de leer')
 
 
 def escribiendo():
-    print('\033[31mEscribiendo')
+    print('\033Escribiendo')
     time.sleep(random.randint(1, 10))
-    print('\033[31mDejando de escribir')
+    print('\033Dejando de escribir')
 
 
 # PRIORIDAD AL LECTOR
@@ -45,16 +45,14 @@ def escritor():
 
 
 ###############################MAIN############################
-ingresar_orden = [0, 0, 1, 0, 0, 1, 0, 0, 0]  # 0 - lector y 1 - escritor
+ingresar_orden = [0, 0, 0, 1, 0, 0, 1, 0, 0, 0]  # 0 - lector y 1 - escritor
 lista = []
 
 for persona in (ingresar_orden):
     if persona == 0:
         lista.append(threading.Thread(target=lector))
-
     elif persona == 1:
         lista.append(threading.Thread(target=escritor))
-
     else:
         print("ERROR---------------")
         break
